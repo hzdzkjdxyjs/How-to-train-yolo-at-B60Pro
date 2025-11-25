@@ -34,13 +34,24 @@ print(f"Inference time: {(end - start) * 1000:.2f} ms")
  - 运行如下，结果如下
 
 (B60) root@b60:~# /root/anaconda3/envs/B60/bin/python /root/ultralytics/predict.py
+Loading /root/ultralytics/runs/detect/train4/weights/best_openvino_model for OpenVINO inference...
+Using OpenVINO LATENCY mode for batch=1 inference on (CPU)...
 
-image 1/1 /root/datasets/coco128/images/train2017/000000000009.jpg: 192x256 3 bowls, 1 broccoli, 22.3ms
-Speed: 0.6ms preprocess, 22.3ms inference, 1.0ms postprocess per image at shape (1, 3, 192, 256)
+image 1/1 /root/datasets/coco128/images/train2017/000000000009.jpg: 256x256 3 bowls, 1 broccoli, 18.5ms
+Speed: 120.7ms preprocess, 18.5ms inference, 922.8ms postprocess per image at shape (1, 3, 256, 256)
 
-image 1/1 /root/datasets/coco128/images/train2017/000000000009.jpg: 192x256 3 bowls, 1 broccoli, 10.9ms
-Speed: 0.4ms preprocess, 10.9ms inference, 0.7ms postprocess per image at shape (1, 3, 192, 256)
-Inference time: 14.76 ms
+image 1/1 /root/datasets/coco128/images/train2017/000000000009.jpg: 256x256 3 bowls, 1 broccoli, 12.8ms
+Speed: 0.8ms preprocess, 12.8ms inference, 9.4ms postprocess per image at shape (1, 3, 256, 256)
+Inference time: 35.45 ms
+ 
+ - GPU被调用了 
+ 
+<img width="772" height="248" alt="image" src="https://github.com/user-attachments/assets/031d68bc-411c-4086-927c-915fcf22eb5e" />
+
+- 推理大概要40ms
+ 
+<img width="733" height="169" alt="image" src="https://github.com/user-attachments/assets/ae315e8b-a312-472c-8932-78f1acc9fc1e" />
+
 
 ## 第4步：使用导出后的模型
 
@@ -48,11 +59,11 @@ Inference time: 14.76 ms
 from ultralytics import YOLO
 import time
 
-# 加载模型
+# 加载量化后的模型
 model = YOLO("/root/ultralytics/runs/detect/train4/weights/best_openvino_model")
 
 # 预热（很重要，OpenVINO 第一次推理会加载图并优化）
-model("/root/datasets/coco128/images/train2017/000000000009.jpg")
+model("/root/datasets/coco128/images/train2017/000000000009.jpg",device="xpu")
 
 # 开始计时
 start = time.time()
@@ -61,7 +72,15 @@ end = time.time()
 
 print(f"Inference time: {(end - start) * 1000:.2f} ms")
 ````
- - 运行如下
+
+<img width="674" height="212" alt="image" src="https://github.com/user-attachments/assets/4bb89e55-f73f-4a34-b5ed-c0c31730dfbd" />
+
+
+<img width="779" height="139" alt="image" src="https://github.com/user-attachments/assets/7bd760de-64d5-41d4-aafa-e515ee0ae5a3" />
+
+ - 量化后的模型推理速度是很快的
+
+ - 运行如下，几处说明，为什么显示是用CPU调用的是因为要避免cuda检查，但实际上后台能看到GPU在调用
 
 ```bash
 (B60) root@b60:~# /root/anaconda3/envs/B60/bin/python /root/ultralytics/predict.py
@@ -74,6 +93,6 @@ Speed: 2.5ms preprocess, 11.4ms inference, 2.2ms postprocess per image at shape 
 image 1/1 /root/datasets/coco128/images/train2017/000000000009.jpg: 256x256 3 bowls, 1 broccoli, 2.2ms
 Speed: 0.4ms preprocess, 2.2ms inference, 0.7ms postprocess per image at shape (1, 3, 256, 256)
 Inference time: 6.01 ms
-````
+
 
 
