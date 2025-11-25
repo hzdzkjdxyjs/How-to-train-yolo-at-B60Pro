@@ -3,6 +3,8 @@
  - 接下来的部分是教您如何将模型部署至显卡，需要解释一下的是我们为什么要部署模型，模型训练完后不是可以直接使用的吗？
  - 这是因为纯python方案调用模型或者说原生精度的模型，在GPU上运行的速度是有提升空间的
  - 所以往往采用PT转为onnx通用格式进行部署，例如NV的方案会使用onnx在tensorrt上进行推理，推理的速度会很快
+   
+---
 
 ## 第1步：下载依赖和导出模型为 OpenVINO IR
 
@@ -11,6 +13,8 @@ pip install openvino openvino-dev
 yolo export model=/root/ultralytics/runs/detect/train4/weights/best.pt format=openvino opset=17
 ````
 <img width="1044" height="300" alt="image" src="https://github.com/user-attachments/assets/6c8df529-2a59-4e62-8131-5ff2a6323aba" />
+
+---
 
 ## 第2步：编写运行部署代码，创建一个文件夹叫predict.py，先使用原生精度运行运行，时间是14.76ms
  - 写代码如下
@@ -52,8 +56,9 @@ Inference time: 35.45 ms
  
 <img width="733" height="169" alt="image" src="https://github.com/user-attachments/assets/ae315e8b-a312-472c-8932-78f1acc9fc1e" />
 
+---
 
-## 第4步：使用导出后的模型
+## 第3步：使用导出后的模型
 
 ```bash
 from ultralytics import YOLO
