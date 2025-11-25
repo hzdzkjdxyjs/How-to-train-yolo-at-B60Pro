@@ -78,9 +78,10 @@ Intel(R) Graphics [0xe211]
 
 ## 第二步：正式训练
 
- - 修改源码使其支持xpu训练，找到ultralytics/ultralytics/utils/torch_utils.py文件select_device函数，在注释处添加这个
+ - 修改源码使其支持xpu训练，找到ultralytics/ultralytics/utils/torch_utils.py文件select_device函数，在device = str(device).lower()后添加这个
 ```bash
-    if str(device).startswith(("xpu", "intel")):
+    device = str(device).lower()
+    if str(device).startswith("xpu"):
     # If PyTorch has XPU and the device is available
         if hasattr(torch, "xpu") and torch.xpu.is_available():
             if ":" in device:
@@ -95,8 +96,13 @@ Intel(R) Graphics [0xe211]
                 f"torch.version.xpu: {torch.version.xpu}\n"
                 f"torch.xpu.is_available(): {torch.xpu.is_available()}\n"
             )
-    if isinstance(device, torch.device) or str(device).startswith(("tpu", "intel")):
-        return device
+    if (
+        device.startswith("gpu")       # gpu, gpu.0, gpu.1
+        or device.startswith("openvino")
+        or device.startswith("intel")
+    ):
+        # 返回 CPU 占位，避免进入 CUDA 检查
+        return torch.device("cpu")
 ````
  - 找到/ultralytics/ultralytics/utils/checks.py 修改amp检查函数，直接替换
 ```bash
