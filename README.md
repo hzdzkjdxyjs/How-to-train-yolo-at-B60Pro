@@ -243,6 +243,9 @@ yolo train model=yolov8n.pt data=coco128.yaml epochs=3 imgsz=256 device=xpu
 ````
 <img width="1031" height="1044" alt="image" src="https://github.com/user-attachments/assets/a260ec76-26c9-4485-9eae-8d982fd6d2da" />
 
+通过我自己开发的AI运维系统可以监控到我们调用了0卡训练模型
+
+<img width="1346" height="603" alt="image" src="https://github.com/user-attachments/assets/73ec68c0-9e74-4ef7-b981-d563e5190054" />
 
 
 
