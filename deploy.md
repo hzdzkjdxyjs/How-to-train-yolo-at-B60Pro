@@ -59,18 +59,15 @@ Inference time: 35.45 ms
 from ultralytics import YOLO
 import time
 
-# 加载量化后的模型
 model = YOLO("/root/ultralytics/runs/detect/train4/weights/best_openvino_model")
 
-# 预热（很重要，OpenVINO 第一次推理会加载图并优化）
-model("/root/datasets/coco128/images/train2017/000000000009.jpg",device="xpu")
+model.predict("/root/datasets/coco128/images/train2017/000000000009.jpg", device="openvino:GPU.0")
 
-# 开始计时
 start = time.time()
-results = model("/root/datasets/coco128/images/train2017/000000000009.jpg")
+results = model.predict("/root/datasets/coco128/images/train2017/000000000009.jpg", device="openvino:GPU.0")
 end = time.time()
 
-print(f"Inference time: {(end - start) * 1000:.2f} ms")
+print(f"OpenVINO inference: {(end - start)*1000:.2f} ms")
 ````
 
 <img width="674" height="212" alt="image" src="https://github.com/user-attachments/assets/4bb89e55-f73f-4a34-b5ed-c0c31730dfbd" />
@@ -93,6 +90,14 @@ Speed: 2.5ms preprocess, 11.4ms inference, 2.2ms postprocess per image at shape 
 image 1/1 /root/datasets/coco128/images/train2017/000000000009.jpg: 256x256 3 bowls, 1 broccoli, 2.2ms
 Speed: 0.4ms preprocess, 2.2ms inference, 0.7ms postprocess per image at shape (1, 3, 256, 256)
 Inference time: 6.01 ms
+```
 
+ - 可以看到GPU在运行
+
+<img width="860" height="325" alt="image" src="https://github.com/user-attachments/assets/c66f6e91-52ac-4415-9799-898d8c6e0b7a" />
+
+ - 可以看到相较于没有量化的结果，其速度可以提升3-4倍
+
+<img width="739" height="176" alt="image" src="https://github.com/user-attachments/assets/7d689313-db0c-43f7-911a-25bff43fd9fc" />
 
 
