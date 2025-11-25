@@ -250,6 +250,8 @@ def check_amp(model):
 ```bash
 yolo train model=yolov8n.pt data=coco128.yaml epochs=3 imgsz=256 device=xpu
 ````
+<img width="1338" height="1053" alt="image" src="https://github.com/user-attachments/assets/ad2d8630-b240-4489-87c2-933f33f0da5a" />
+
 <img width="1031" height="1044" alt="image" src="https://github.com/user-attachments/assets/a260ec76-26c9-4485-9eae-8d982fd6d2da" />
 
 通过我自己开发的AI运维系统可以监控到我们调用了0卡训练模型
