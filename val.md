@@ -9,7 +9,7 @@
 | **推理时间 Inference time** | **43.3 ms**  | **2.2 ms**      | **🔥 19.7× 加速** |
 | **总耗时（val benchmark）**  | ~6.8 s       | ~0.8 s          | **🔥 8.5× 加速**  |
 
-
+---
 
  - 先使用原生的来跑一下
    
@@ -96,6 +96,7 @@ Results saved to /root/ultralytics/runs/detect/val4
 💡 Learn more at https://docs.ultralytics.com/modes/val
 VS Code: view Ultralytics VS Code Extension ⚡ at https://docs.ultralytics.com/integrations/vscode
 ````
+---
 
  - 再使用部署后的结果跑一下呗
 
@@ -184,5 +185,6 @@ Results saved to /root/ultralytics/runs/detect/val3
 💡 Learn more at https://docs.ultralytics.com/modes/val
 VS Code: view Ultralytics VS Code Extension ⚡ at https://docs.ultralytics.com/integrations/vscode
 ````
+---
 
 未来要做的：拿其它品牌的显卡对比一下
